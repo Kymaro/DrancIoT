@@ -14,9 +14,6 @@ lum_seuil = 10 #seuil au dessus du quel on determine la lumiere comme allume
 lum_sensor = 1 #capteur de lumiere sur A1
 potentiometer = 2 #bouton de menu sur A2
 ##########################################ACTIVATION DES PORTS DU SHIELD GROVEPI#########################################
-pinMode(potentiometer,"INPUT")
-pinMode(lum_sensor,"INTPUT")
-time.sleep(1)
 ####################################################VARIABLES INTERNES###################################################
 t_refresh = 800 # nombre de loop entre deux envoie a l instant t
 compteur_echec_envoie = 0 # compteur d echec d envoie de donnee sur azure (se remet a 0 si reussite)
@@ -39,7 +36,6 @@ def Luminosite() : #luminosite qui envoie True ou False avec le seuil
 def screen_administrator(encoder) : # permet de gerer lecran sans quil refresh a chaque iteration 
     global mode_value
     mode_value_old = mode_value
-    print(encoder_value)
     if (encoder_value <=341 and encoder_value >= 0) and mode_value != 1 : #MODE 1
        	setText("Temperature : \n" +str(temp_dht))
        	setRGB(0,128,255)
@@ -54,25 +50,28 @@ def screen_administrator(encoder) : # permet de gerer lecran sans quil refresh a
        	mode_value = 3   
     if not ((mode_value - mode_value_old) != 0) : #s il y a pas eu un changement de mode sur l ecran
         time.sleep(140.0/1000.0) #on attend 140 ms pour etre sur du temps a chaque loop
-"""
-def createSBS() : #permet de creer le canal de communication avec Azure 
-	
-    service_namespace = 'RaspberryPiNSTest' #a modifier
-    key_name = 'RootManageSharedAccessKey' # a modifier
-    key_value = 'yEcs0927kFYs1U8J7x4VCwZAaf3ck38hqSGY9YjiMAo=' # a modifier
-	
-    sbs = ServiceBusService(service_namespace, shared_access_key_name=key_name, shared_access_key_value=key_value)
 
-    return sbs
-"""
+
+#def createSBS() : #permet de creer le canal de communication avec Azure 
+	
+#    service_namespace = 'RaspberryPiNSTest' #a modifier
+#    key_name = 'RootManageSharedAccessKey' # a modifier
+#    key_value = 'yEcs0927kFYs1U8J7x4VCwZAaf3ck38hqSGY9YjiMAo=' # a modifier
+	
+#    sbs = ServiceBusService(service_namespace, shared_access_key_name=key_name, shared_access_key_value=key_value)
+
+#    return sbs
 ##########################################################SETUP##########################################################
 #sbs = createSBS()
 setText("Bienvenue\ndans l'IoT Hub")
 setRGB(128,255,0)
 time.sleep(2)
 ######################################################BOUCLE INFINI######################################################
+
+
 while True :
-    if ( t_refresh >= t_actuator) : 
+    if ( t_refresh >= t_actuator) :
+	print(analogRead(2)) 
 	DHT()
 	while (isnan(temp_dht) or temp_dht == 0) : # on essaie tant que le capteur n a pas de valeur valide
 	    DHT()

@@ -36,10 +36,10 @@ def DHT() : #temperature et humidite numerique
 def Luminosite() : #luminosite qui envoie True ou False avec le seuil
     lum_value = analogRead(lum_sensor)
 
-def screen_administrator() : # permet de gerer lecran sans quil refresh a chaque iteration 
-    global mode_value,temp_dht,hum
-    encoder_value = analogRead(potentiometer)
+def screen_administrator(encoder) : # permet de gerer lecran sans quil refresh a chaque iteration 
+    global mode_value
     mode_value_old = mode_value
+    print(encoder_value)
     if (encoder_value <=341 and encoder_value >= 0) and mode_value != 1 : #MODE 1
        	setText("Temperature : \n" +str(temp_dht))
        	setRGB(0,128,255)
@@ -89,5 +89,6 @@ while True :
 		setText("Probleme envoie\nmessage azure")
 		break # sort de la boucle, reboot necessaire du programme ou de la RPI
     if (t_refresh >= t_wait) : # on attend un peu avant de refresh l ecran
-        screen_administrator()
+        encoder_value = analogRead(potentiometer)
+        screen_administrator(encoder_value)
     t_refresh += 1

@@ -32,6 +32,7 @@ def DHT() : #temperature et humidite numerique
     temp_dht = round(temp_dht,1)
 
 def Luminosite() : #luminosite qui envoie True ou False avec le seuil
+    global lum_statut
     lum_value = analogRead(lum_sensor)
     try :
         resistance = (float)(1023 - lum_value)*10/lum_value

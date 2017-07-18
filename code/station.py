@@ -89,7 +89,7 @@ time.sleep(2)
 
 while True :
     if ( t_refresh >= t_actuator) :
-    Luminosite()
+        Luminosite()
 	DHT()
 	while (isnan(temp_dht) or temp_dht == 0) : # on essaie tant que le capteur n a pas de valeur valide
 	    DHT()

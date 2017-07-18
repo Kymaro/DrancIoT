@@ -62,7 +62,7 @@ def screen_administrator() : # permet de gerer lecran sans quil refresh a chaque
             text = 'Allumee'
         else : 
             text = 'Eteinte'
-       	setText("Lumière \n"+text)
+       	setText("Lumiere \n"+text)
        	setRGB(255,128,0)
        	mode_value = 3   
     if not ((mode_value - mode_value_old) != 0) : #s il y a pas eu un changement de mode sur l ecran

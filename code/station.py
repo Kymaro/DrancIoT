@@ -23,6 +23,7 @@ mode_value_old = 0
 temp_dht = 0
 hum = 0
 lum = 0
+lum_statut = False
 identifiant = "Identifiant" # a modifier
 ########################################################FONCTIONS########################################################
 def DHT() : #temperature et humidite numerique
@@ -32,10 +33,22 @@ def DHT() : #temperature et humidite numerique
 
 def Luminosite() : #luminosite qui envoie True ou False avec le seuil
     lum_value = analogRead(lum_sensor)
+    try :
+        resistance = (float)(1023 - lum_value)*10/lum_value
+        if resistance > lum_seuil :
+            lum_statut = False
+        else :
+            lum_statut = True
+    except : #si erreur au capteur, il va alterner true et false pour que cela soit visible 
+        if lum_statut :
+            lum_statut = False
+        else : 
+            lum_statut = True
 
-def screen_administrator(encoder) : # permet de gerer lecran sans quil refresh a chaque iteration 
+def screen_administrator() : # permet de gerer lecran sans quil refresh a chaque iteration 
     global mode_value
     mode_value_old = mode_value
+    encoder_value = analogRead(potentiometer)
     if (encoder_value <=341 and encoder_value >= 0) and mode_value != 1 : #MODE 1
        	setText("Temperature : \n" +str(temp_dht))
        	setRGB(0,128,255)
@@ -45,7 +58,11 @@ def screen_administrator(encoder) : # permet de gerer lecran sans quil refresh a
        	setRGB(255,0,128)
        	mode_value = 2
     elif (encoder_value > 682 and encoder_value <=1023) and mode_value != 3 : # MODE 3
-       	setText("Luminosite \n")
+        if lum_statut :
+            text = 'Allumee'
+        else : 
+            text = 'Eteinte'
+       	setText("Lumière \n"+text)
        	setRGB(255,128,0)
        	mode_value = 3   
     if not ((mode_value - mode_value_old) != 0) : #s il y a pas eu un changement de mode sur l ecran
@@ -71,7 +88,7 @@ time.sleep(2)
 
 while True :
     if ( t_refresh >= t_actuator) :
-	print(analogRead(2)) 
+    Luminosite()
 	DHT()
 	while (isnan(temp_dht) or temp_dht == 0) : # on essaie tant que le capteur n a pas de valeur valide
 	    DHT()
@@ -88,6 +105,5 @@ while True :
 		setText("Probleme envoie\nmessage azure")
 		break # sort de la boucle, reboot necessaire du programme ou de la RPI
     if (t_refresh >= t_wait) : # on attend un peu avant de refresh l ecran
-        encoder_value = analogRead(potentiometer)
-        screen_administrator(encoder_value)
+        screen_administrator()
     t_refresh += 1

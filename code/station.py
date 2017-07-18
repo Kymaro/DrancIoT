@@ -12,7 +12,7 @@ t_actuator = 799 #nombre de loop entre deux envoie de donnees
 t_wait = 25 
 lum_seuil = 10 #seuil au dessus du quel on determine la lumiere comme allume
 lum_sensor = 1 #capteur de lumiere sur A1
-potentiometer = 2 #bouton de menu sur A2
+potentiometer = 0 #bouton de menu sur A2
 ##########################################ACTIVATION DES PORTS DU SHIELD GROVEPI#########################################
 ####################################################VARIABLES INTERNES###################################################
 t_refresh = 800 # nombre de loop entre deux envoie a l instant t
@@ -49,7 +49,6 @@ def Luminosite() : #luminosite qui envoie True ou False avec le seuil
 def screen_administrator() : # permet de gerer lecran sans quil refresh a chaque iteration 
     global mode_value
     mode_value_old = mode_value
-    encoder_value = analogRead(potentiometer)
     if (encoder_value <=341 and encoder_value >= 0) and mode_value != 1 : #MODE 1
        	setText("Temperature : \n" +str(temp_dht))
        	setRGB(0,128,255)
@@ -106,5 +105,6 @@ while True :
 		setText("Probleme envoie\nmessage azure")
 		break # sort de la boucle, reboot necessaire du programme ou de la RPI
     if (t_refresh >= t_wait) : # on attend un peu avant de refresh l ecran
+        encoder_value = analogRead(potentiometer)
         screen_administrator()
     t_refresh += 1

@@ -23,7 +23,7 @@ mode_value_old = 0
 temp_dht = 0
 hum = 0
 lum = 0
-identifiant = "Rpi Test" # a modifier
+identifiant = "Identifiant" # a modifier
 ########################################################FONCTIONS########################################################
 def DHT() : #temperature et humidite numerique
     global temp_dht,hum
@@ -54,9 +54,9 @@ def screen_administrator(encoder) : # permet de gerer lecran sans quil refresh a
 
 #def createSBS() : #permet de creer le canal de communication avec Azure 
 	
-#    service_namespace = 'RaspberryPiNSTest' #a modifier
-#    key_name = 'RootManageSharedAccessKey' # a modifier
-#    key_value = 'yEcs0927kFYs1U8J7x4VCwZAaf3ck38hqSGY9YjiMAo=' # a modifier
+#    service_namespace = 'namespaceName' #a modifier
+#    key_name = 'SharedAccessKeyName' # a modifier
+#    key_value = 'SharedAccessKey' # a modifier
 	
 #    sbs = ServiceBusService(service_namespace, shared_access_key_name=key_name, shared_access_key_value=key_value)
 
@@ -79,7 +79,7 @@ while True :
         d = {'DeviceID' : identifiant, 'Temperature' : temp_dht, 'Humidity' : hum,'Time' : dt }
         msg = json.dumps(d) #cree le message a envoyer
         try :
-            #sbs.send_event('dht11',msg) #a modifier
+            #sbs.send_event('eventHubName',msg) #a modifier
             compteur_echec_envoie = 0
         except :
             compteur_echec_envoie += 1

@@ -12,7 +12,7 @@ t_actuator = 799 #nombre de loop entre deux envoie de donnees
 t_wait = 25 
 lum_seuil = 10 #seuil au dessus du quel on determine la lumiere comme allume
 lum_sensor = 1 #capteur de lumiere sur A1
-potentiometer = 0 #bouton de menu sur A2
+potentiometer = 2 #bouton de menu sur A2
 ##########################################ACTIVATION DES PORTS DU SHIELD GROVEPI#########################################
 ####################################################VARIABLES INTERNES###################################################
 t_refresh = 800 # nombre de loop entre deux envoie a l instant t
@@ -104,6 +104,8 @@ while True :
                 setRGB(255,0,0)
 		setText("Probleme envoie\nmessage azure")
 		break # sort de la boucle, reboot necessaire du programme ou de la RPI
+        t_refresh = 0
+
     if (t_refresh >= t_wait) : # on attend un peu avant de refresh l ecran
         encoder_value = analogRead(potentiometer)
         screen_administrator()

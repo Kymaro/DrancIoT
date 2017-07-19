@@ -25,6 +25,7 @@ hum = 0
 lum = 0
 lum_statut = False
 identifiant = "Rpitest" # a modifier
+lum_envoie = 0
 ########################################################FONCTIONS########################################################
 def DHT() : #temperature et humidite numerique
     global temp,hum
@@ -32,19 +33,23 @@ def DHT() : #temperature et humidite numerique
     temp = round(temp,1)
 
 def Luminosite() : #luminosite qui envoie True ou False avec le seuil
-    global lum_statut
+    global lum_statut,lum_envoie
     lum_value = analogRead(lum_sensor)
     try :
         resistance = (float)(1023 - lum_value)*10/lum_value
         if resistance > lum_seuil :
             lum_statut = False
+            lum_envoie = 0
         else :
             lum_statut = True
+            lum_envoie = 1
     except : #si erreur au capteur, il va alterner true et false pour que cela soit visible 
         if lum_statut :
             lum_statut = False
+            lum_envoie = 0
         else : 
             lum_statut = True
+            lum_envoie = 1
 
 def screen_administrator() : # permet de gerer lecran sans quil refresh a chaque iteration 
     global mode_value
@@ -93,9 +98,8 @@ while True :
 	while (isnan(temp) or temp == 0) : # on essaie tant que le capteur n a pas de valeur valide
 	    DHT()
         dt = str(datetime.datetime.now())
-        d = {'DeviceID' : identifiant,'Time' : "France/Local Time here",'Temperature' : temp, 'Humidity' : hum }
+        d = {'DeviceID' : identifiant,'Time' : "France/Local Time here",'Temperature' : temp, 'Humidity' : hum,'Light' : lum_envoie }
         msg = json.dumps(d) #cree le message a envoyer
-        print(msg)
         try :
             sbs.send_event('dht11',msg) #a modifier
             compteur_echec_envoie = 0

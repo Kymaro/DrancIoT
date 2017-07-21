@@ -3,8 +3,8 @@ from grovepi import *
 from grove_rgb_lcd import *
 import time,datetime,json
 from math import *
-from azure.servicebus import ServiceBusService
-from azure.servicebus import Message
+#from azure.servicebus import ServiceBusService
+#from azure.servicebus import Message
 ###########################################DECLARATION DES CONSTANTES GLOBALES###########################################
 dht_sensor_port = 7 #capteur humidite et temperature (DHT11 ou DHT22) sur D7
 dht_sensor_type = 0 #mettre 0 si bleu (DHT11) ou 1 si blanc (DHT22)
@@ -24,7 +24,7 @@ temp = 0
 hum = 0
 lum = 0
 lum_statut = False
-identifiant = "Rpitest" # a modifier
+identifiant = "Identifiant" # a modifier
 lum_envoie = 0
 ########################################################FONCTIONS########################################################
 def DHT() : #temperature et humidite numerique
@@ -74,17 +74,17 @@ def screen_administrator() : # permet de gerer lecran sans quil refresh a chaque
         time.sleep(140.0/1000.0) #on attend 140 ms pour etre sur du temps a chaque loop
 
 
-def createSBS() : #permet de creer le canal de communication avec Azure 
+#def createSBS() : #permet de creer le canal de communication avec Azure 
 	
-    service_namespace = 'RaspberryPiNSTest' #a modifier
-    key_name = 'RootManageSharedAccessKey' # a modifier
-    key_value = 'yEcs0927kFYs1U8J7x4VCwZAaf3ck38hqSGY9YjiMAo=' # a modifier
+#    service_namespace = 'namespaceName' #a modifier
+#    key_name = 'SharedAccessKeyName' # a modifier
+#    key_value = 'SharedAccessKey' # a modifier
 	
-    sbs = ServiceBusService(service_namespace, shared_access_key_name=key_name, shared_access_key_value=key_value)
+#    sbs = ServiceBusService(service_namespace, shared_access_key_name=key_name, shared_access_key_value=key_value)
 
-    return sbs
+#    return sbs
 ##########################################################SETUP##########################################################
-sbs = createSBS()
+#sbs = createSBS()
 setText("Bienvenue\ndans l'IoT Hub")
 setRGB(128,255,0)
 time.sleep(2)
@@ -101,7 +101,7 @@ while True :
         d = {'DeviceID' : identifiant,'Time' : "France/Local Time here",'Temperature' : temp, 'Humidity' : hum,'Light' : lum_envoie }
         msg = json.dumps(d) #cree le message a envoyer
         try :
-            sbs.send_event('dht11',msg) #a modifier
+            #sbs.send_event('eventHubName',msg) #a modifier
             compteur_echec_envoie = 0
         except :
             compteur_echec_envoie += 1

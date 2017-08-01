@@ -1,0 +1,12 @@
+rtmp {
+        server {
+                listen 1935;
+                chunk_size 128;
+
+                application live {
+                        live on;
+                        exec_push omxplayer --live rtmp://localhost:1935/live/stream;
+                        record off;
+                }
+        }
+}
